@@ -31,7 +31,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-3 col-md-4">
                         <div class="logo">
-                            <a href="">
+                            <a>
                                 <img src= {% static 'img/logo.png' %}  alt="Logo">
                             </a>
                         </div>
@@ -44,11 +44,11 @@
                     </div>
                     <div class="col-lg-3 col-md-4">
                         <div class="social">
-                            <a href=""><i class="fab fa-twitter"></i></a>
-                            <a href=""><i class="fab fa-facebook"></i></a>
-                            <a href=""><i class="fab fa-linkedin"></i></a>
-                            <a href=""><i class="fab fa-instagram"></i></a>
-                            <a href=""><i class="fab fa-youtube"></i></a>
+                            <a ><i class="fab fa-twitter"></i></a>
+                            <a ><i class="fab fa-facebook"></i></a>
+                            <a ><i class="fab fa-linkedin"></i></a>
+                            <a ><i class="fab fa-instagram"></i></a>
+                            <a ><i class="fab fa-youtube"></i></a>
                         </div>
                     </div>
                 </div>
@@ -61,26 +61,26 @@
         <div class="header">
             <div class="container">
                 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-                    <a href="#" class="navbar-brand">MENU</a>
+                    <a  class="navbar-brand">MENU</a>
                     <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                         <span class="navbar-toggler-icon"></span>
                     </button>
 
                     <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                         <div class="navbar-nav m-auto">
-                            <a href="index.html" class="nav-item nav-link active">Home page</a>
+                            <a href={% url 'home' %} class="nav-item nav-link active">Home page</a>
                             
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Categories</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown">Categories</a>
                                 <div class="dropdown-menu">
                                     {% for category in categories %}
-                                    <a href="#" class="dropdown-item">{{category.name}}</a>
+                                    <a href={% url 'categoryDetail' category.name %} class="dropdown-item">{{category.name}}</a>
                                     {% endfor %}
                                 </div>
                             </div>
                                                         
                             <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">Regions</a>
+                                <a  class="nav-link dropdown-toggle" data-toggle="dropdown">Regions</a>
                                 <div class="dropdown-menu">
                                     {% for region in regions %}
                                     <a href="#" class="dropdown-item">{{region.name}}</a>
@@ -125,11 +125,11 @@
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
-    <script src="lib/slick/slick.min.js"></script>
+    <script src={% static 'lib/easing/easing.min.js' %}></script>
+    <script src={% static 'lib/slick/slick.min.js' %}></script>
 
 
     <!-- Template Javascript -->
-    <script src="js/main.js"></script>
+    <script src={% static 'js/main.js' %}></script>
 </body>
 </html>

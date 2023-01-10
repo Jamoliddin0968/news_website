@@ -50,6 +50,7 @@ class Category(models.Model):
         return self.name
     
 class Post(models.Model):
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     body = models.TextField()
     img = models.ImageField(upload_to = post_image_rename)
