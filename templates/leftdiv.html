@@ -5,7 +5,7 @@
             <div class="category">
                 <ul class="fa-ul">
                     {% for category in categories %}
-                    <li><span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span><a href="">{{category.name}}</a></li> 
+                    <li><span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span><a href={% url 'categoryDetail' category.name %}>{{category.name}}</a></li> 
                     {% endfor %}
                       </ul>
             </div>

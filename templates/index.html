@@ -15,7 +15,7 @@
                             <div class="tn-content">
                                 <div class="tn-content-inner">
                                     <a class="tn-date" href=""><i class="far fa-clock"></i>{{ top_post.created_date}}</a>
-                                    <a class="tn-title" href={% url 'detail' top_post.pk %}>{{top_post.title}}</a>
+                                    <a class="tn-title" href={% url 'detail' top_post.pk %}>{{top_post.title }}</a>
                                 </div>
                             </div>
                         </div>
@@ -32,7 +32,7 @@
                                     <div class="tn-content">
                                         <div class="tn-content-inner">
                                             <a class="tn-date" ><i class="far fa-clock"></i>{{post.created_date}}</a>
-                                            <a class="tn-title" href={% url 'detail' post.pk %}>{{post.title}}</a>
+                                            <a class="tn-title" href={% url 'detail' post.pk %}>{{post.title | slice:40}}</a>
                                         </div>
                                     </div>
                                 </div>

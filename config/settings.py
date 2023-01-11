@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     'news.apps.NewsConfig',
     
     "taggit",
-    # 'hitcount',
+    'hitcount',
 ]
 
 MIDDLEWARE = [

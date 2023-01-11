@@ -3,7 +3,8 @@ from django.shortcuts import render, get_object_or_404
 # https://htmlcodex.com/demo/?item=456
 from .models import Post, Ads, Category
 from django.utils.translation import gettext_lazy as _
-from taggit.models import Tag
+from hitcount.views import HitCountDetailView
+
 
 def index(request):
     ds = {}
@@ -24,13 +25,13 @@ def index(request):
     return render(request, "index.html", context)
 
 
-def detail(request, pk):
-    post = get_object_or_404(Post, pk=pk)
+# def detail(request, pk):
+#     post = get_object_or_404(Post, pk=pk)
     
-    context = {
-        "post": post,
-    }
-    return render(request, "single_page.html", context)
+#     context = {
+#         "post": post,
+#     }
+#     return render(request, "single_page.html", context)
 
 
 def regionDetail(request, pk):
@@ -39,11 +40,13 @@ def regionDetail(request, pk):
 
 def categoryDetail(request, name):
     category = get_object_or_404(Category, name=name)
-    top_four_post = category.post_set.all()
-    len_of_post = 5 if len(top_four_post) > 5 else len(top_four_post)
+    news = category.post_set.all()
+    
     context = {
-        "top_post": category.post_set.first(),
-        "top_post_four": top_four_post[1:len_of_post],
+        "top_post": news.first(),
+        "top_post_four": news[1:5],
+        'latest_news':news.last(),
+        'latest_news_five':news[:5],
     }
     return render(request, "index.html", context)
 
@@ -51,7 +54,15 @@ def categoryDetail(request, name):
 def tagDetail(request, pk):
     pass
 
+# ko'rishlar soni
 
+class Detail(HitCountDetailView):
+    model = Post       
+    count_hit = True
+    template_name = "single_page.html"
+    context_object_name = "post"
+
+# generate fake data
 from django.contrib.auth.models import User
 from faker import Faker
 fake = Faker()

@@ -3,18 +3,25 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.models import User
 from taggit.managers import TaggableManager
 from datetime import datetime
+from hitcount.models import HitCountMixin , HitCount
+from django.contrib.contenttypes.fields import GenericRelation
+
 
 def post_image_rename(instance, filename):
     ext = filename.split('.')[-1]
-    name = str(datetime.now()).replace("-","").replace(":","").replace(" ","")
+    name = str(datetime.now()).replace(
+        "-", "").replace(":", "").replace(" ", "")
     filename = "%s.%s" % (name, ext)
     return f"post/{filename}"
 
+
 def ad_image_rename(instance, filename):
     ext = filename.split('.')[-1]
-    name = str(datetime.now()).replace("-","").replace(":","").replace(" ","")
+    name = str(datetime.now()).replace(
+        "-", "").replace(":", "").replace(" ", "")
     filename = "%s.%s" % (name, ext)
     return f"ads/{filename}"
+
 
 class Ads(models.Model):
     name = models.CharField(max_length=100)
@@ -22,44 +29,50 @@ class Ads(models.Model):
     img = models.ImageField(upload_to=ad_image_rename)
     is_active = models.BooleanField()
     created_date = models.DateTimeField(auto_now_add=True)
-    
+
     def __str__(self) -> str:
         return self.name
+
     class Meta:
         verbose_name = _("Ad")
         verbose_name_plural = _("Ads")
-        
-        
-    
+
+
 class Region(models.Model):
     name = models.CharField(max_length=100)
+
     class Meta:
         verbose_name = _("Region")
         verbose_name_plural = _("Regions")
-        
+
     def __str__(self):
         return self.name
+
+
 class Category(models.Model):
     name = models.CharField(max_length=100)
-    
+
     class Meta:
         verbose_name = _("Category")
         verbose_name_plural = _("Categories")
-        
+
     def __str__(self):
         return self.name
-    
-class Post(models.Model):
+
+
+class Post(models.Model, HitCountMixin):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     title = models.CharField(max_length=150)
     body = models.TextField()
-    img = models.ImageField(upload_to = post_image_rename)
+    img = models.ImageField(upload_to=post_image_rename)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    author = models.ForeignKey(User,on_delete=models.CASCADE)
-    hit_count = models.PositiveIntegerField(default=0)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    hit_count = GenericRelation(
+        HitCount, object_id_field='object_pk',
+        related_query_name='hit_count_generic_relation')
     tags = TaggableManager()
-    
+
     class Meta:
         verbose_name = _("Post")
         verbose_name_plural = _("Posts")
