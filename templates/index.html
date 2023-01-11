@@ -113,67 +113,34 @@
                                     </div>
                                 </div>
                             </div>
+                            {% comment %} popular news {% endcomment %}
                             <div class="col-md-12">
                                 <h2><i class="fas fa-align-justify"></i>Popular News</h2>
                                 <div class="row">
                                     <div class="col-lg-6">
                                         <div class="mn-img">
-                                            <img src="img/popular-news.jpg" />
+                                            <img src={{popular_news.img.url}} />
                                         </div>
                                         <div class="mn-content">
-                                            <a class="mn-title" href="">Phasellus gravida metus vitae laoreet aliquam</a>
-                                            <a class="mn-date" href=""><i class="far fa-clock"></i>05-Feb-2020</a>
+                                            <a class="mn-title" href={% url 'detail' popular_news.pk %}>{{popular_news.title | slice:20 }}</a>
+                                            <a class="mn-date" href=""><i class="far fa-clock"></i>{{popular_news.created_date}}</a>
                                             <p>
-                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sed porta dui. Class aptent taciti sociosqu ad litora torquent per conubia nostra inceptos...
-                                            </p>
+                                                {{popular_news.body | slice:70 }} </p>
                                         </div>
                                     </div>
                                     <div class="col-lg-6">
+                                        {% for post in popular_news_five %}
+                                        {% if post %}
                                         <div class="mn-list">
                                             <div class="mn-img">
-                                                <img src="img/popular-news.jpg" />
+                                                <img src={{post.img.url}} />
                                             </div>
                                             <div class="mn-content">
-                                                <a class="mn-title" href="">Nullam risus ante sempe</a>
-                                                <a class="mn-date" href=""><i class="far fa-clock"></i>05-Feb-2020</a>
+                                                <a class="mn-title" href={% url 'detail' post.pk %}>{{post.title | slice:30}}</a>
+                                                <a class="mn-date" href=""><i class="far fa-clock"></i>{{post.created_date}}</a>
                                             </div>
-                                        </div>
-                                        <div class="mn-list">
-                                            <div class="mn-img">
-                                                <img src="img/popular-news.jpg" />
-                                            </div>
-                                            <div class="mn-content">
-                                                <a class="mn-title" href="">Pellentesque ultrices quam id ipsum tempor</a>
-                                                <a class="mn-date" href=""><i class="far fa-clock"></i>05-Feb-2020</a>
-                                            </div>
-                                        </div>
-                                        <div class="mn-list">
-                                            <div class="mn-img">
-                                                <img src="img/popular-news.jpg" />
-                                            </div>
-                                            <div class="mn-content">
-                                                <a class="mn-title" href="">Nam ex magna, commodo sed turpis rutrum</a>
-                                                <a class="mn-date" href=""><i class="far fa-clock"></i>05-Feb-2020</a>
-                                            </div>
-                                        </div>
-                                        <div class="mn-list">
-                                            <div class="mn-img">
-                                                <img src="img/popular-news.jpg" />
-                                            </div>
-                                            <div class="mn-content">
-                                                <a class="mn-title" href="">Aliquam condimentum metus</a>
-                                                <a class="mn-date" href=""><i class="far fa-clock"></i>05-Feb-2020</a>
-                                            </div>
-                                        </div>
-                                        <div class="mn-list">
-                                            <div class="mn-img">
-                                                <img src="img/popular-news.jpg" />
-                                            </div>
-                                            <div class="mn-content">
-                                                <a class="mn-title" href="">Ut ornare rutrum ligula erat volutpat</a>
-                                                <a class="mn-date" href=""><i class="far fa-clock"></i>05-Feb-2020</a>
-                                            </div>
-                                        </div>
+                                        </div>{% endif %}
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>

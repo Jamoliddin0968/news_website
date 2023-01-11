@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import Post, Ads, Category
 from django.utils.translation import gettext_lazy as _
 from hitcount.views import HitCountDetailView
-
+from hitcount.models import HitCount
 
 def index(request):
     ds = {}
@@ -12,16 +12,16 @@ def index(request):
     for cat in Category.objects.all():
         qs = cat.post_set.all().order_by("-id")[:3]
         ds[cat.name] = qs
+    popular_posts = news.all().order_by("hit_count")[:6]
     context = {
         "top_post": Post.objects.first(),
         "top_post_four": news[1:5],
         "cats":ds,
         'latest_news':news.last(),
         'latest_news_five':news[:5],
+        "popular_news_five":popular_posts[1:5],
+        'popular_news':popular_posts.first(),
     }
-    for i in context["cats"]["Sport"]:
-        print(i)
-        print("---------------------------------")
     return render(request, "index.html", context)
 
 
@@ -41,12 +41,14 @@ def regionDetail(request, pk):
 def categoryDetail(request, name):
     category = get_object_or_404(Category, name=name)
     news = category.post_set.all()
-    
+    popular_posts = news.all().order_by("hit_count")[:6]
     context = {
         "top_post": news.first(),
         "top_post_four": news[1:5],
         'latest_news':news.last(),
         'latest_news_five':news[:5],
+        "popular_news_five":popular_posts[1:5],
+        'popular_news':popular_posts.first(),
     }
     return render(request, "index.html", context)
 
