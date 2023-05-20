@@ -7,3 +7,4 @@ gunicorn
 pillow
 pip-chill
 requests
+whitenoise
