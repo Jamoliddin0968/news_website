@@ -12,6 +12,9 @@ class Bank(models.Model):
     name = models.CharField(max_length=63)
     slug = models.CharField(max_length=63)
     image = models.ImageField(upload_to='images/bank/',null=True)
+    
+    def __str__(self) -> str:
+        return self.name
       
 class Exchange(models.Model):
     daily = models.ForeignKey(Daily, on_delete=models.CASCADE)
