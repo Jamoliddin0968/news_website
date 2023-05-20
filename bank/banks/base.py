@@ -6,7 +6,7 @@ class BaseBankClass():
     
     bank_name = ""
     
-    
+    bank_slug=""
     def get_data():
         pass
     

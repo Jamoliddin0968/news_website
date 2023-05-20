@@ -4,9 +4,10 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Exchange,Daily
 from .serializers import ExchangeSerializer
-from .banks.master import get_all_data
 from django.utils import timezone
 from django.core.cache import cache
+
+
 class Test(APIView):
     def get(self,request):
         data = get_all_data()
@@ -15,14 +16,8 @@ class Test(APIView):
 
 class ExchangeListAPIView(ListAPIView):
     def get_queryset(self):
-        curr = timezone.now().date()
-        obj = Daily.objects.last()
-        if not obj or obj.date.date() < curr:
-            obj = Daily.objects.create()
-            obj.generate_daily_data()
-        
-        
-        return Exchange.objects.filter(daily_id=obj.id).order_by('bank_name')
+        obj = Daily.objects.last()        
+        return Exchange.objects.filter(daily_id=obj.id).select_related('bank').order_by('bank__name')
 
     def get(self,request,*args, **kwargs):
         data = cache.get('currency_data')
@@ -38,9 +33,8 @@ class ExchangeListAPIView(ListAPIView):
         
 
         data = self.get_serializer(queryset, many=True).data
-        cache.set('my_cache_key', data, 60 * 150)
+        cache.set('currency_data', data, 60 * 150)
         
         return Response(data)
     serializer_class = ExchangeSerializer
-    
     
