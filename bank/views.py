@@ -20,7 +20,7 @@ class ExchangeListAPIView(ListAPIView):
             obj = Daily.objects.create()
             obj.generate_daily_data()
             
-        return Exchange.objects.filter(daily_id=obj.id)
+        return Exchange.objects.filter(daily_id=obj.id).order_by('bank_name')
 
         
     serializer_class = ExchangeSerializer
