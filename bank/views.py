@@ -33,7 +33,7 @@ class ExchangeListAPIView(ListAPIView):
         
 
         data = self.get_serializer(queryset, many=True).data
-        cache.set('currency_data', data, 60 * 150)
+        cache.set('currency_data', data, 60 * 3)
         
         return Response(data)
     serializer_class = ExchangeSerializer
