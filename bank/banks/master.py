@@ -12,15 +12,20 @@ bank_list = (
 
 def get_all_data(daily):
     from bank.models import Exchange as ex
-    data = [i().get_data() for i in bank_list if i().get_data()["success"]]
 
-    exchanges = [ex(
-        daily=daily,
-        bank_name=temp_data['bank_name'],
-        buy=int(temp_data['olish']),
-        sell=int(temp_data['sotish'])
-    ) for temp_data in data]
+    data = []
 
-    ex.objects.bulk_create(exchanges)
+    for i in bank_list:
+        temp_data = i().get_data()
+        if temp_data["success"]:
+            bank_name = temp_data['bank_name']
+            olish = int(temp_data['olish'])
 
+            sotish = int(temp_data['sotish'])
+            ex.objects.create(
+                daily=daily,
+                bank_name=bank_name,
+                buy=olish, sell=sotish
+            )
+            data.append(temp_data)
     return data
