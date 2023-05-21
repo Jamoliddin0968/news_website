@@ -31,8 +31,13 @@ class ExchangeListAPIView(ListAPIView):
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)
         
-
-        data = self.get_serializer(queryset, many=True).data
+        obj = Daily.objects.last()
+        old_data = self.get_serializer(queryset, many=True).data
+        date = queryset.first().daily.date
+        data = {
+            'last_date':obj.date,
+            'data':old_data
+        }
         cache.set('currency_data', data, 60 * 3)
         
         return Response(data)
