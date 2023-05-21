@@ -4,7 +4,7 @@ from .base import BaseBankClass
 
 
 class InfinBank(BaseBankClass):
-    
+
     bank_name = 'Infin bank'
     bank_slug = 'infinbank'
 
@@ -25,7 +25,7 @@ class InfinBank(BaseBankClass):
                 'olish': float(olish),
                 'sotish': float(sotish)
             }
-            
+
         except Exception as e:
             print(e.args)
             return {
@@ -36,6 +36,7 @@ class InfinBank(BaseBankClass):
 class TuronBank(BaseBankClass):
     bank_name = 'Turon bank'
     bank_slug = 'turonbank'
+
     @classmethod
     def get_data(self):
         try:
@@ -61,6 +62,7 @@ class TuronBank(BaseBankClass):
 class HamkorBank(BaseBankClass):
     bank_name = 'Hamkor bank'
     bank_slug = 'hamkorbank'
+
     @classmethod
     def get_data(self):
         try:
@@ -87,6 +89,7 @@ class HamkorBank(BaseBankClass):
 class AgroBank(BaseBankClass):
     bank_name = 'Agro bank'
     bank_slug = 'agrobank'
+
     @classmethod
     def get_data(self):
         try:
@@ -120,6 +123,7 @@ class AgroBank(BaseBankClass):
 class IpakYuliBank(BaseBankClass):
     bank_name = "Ipak yo'li bank"
     bank_slug = 'ipakyolibank'
+
     @classmethod
     def get_data(self):
         try:
@@ -167,6 +171,7 @@ class IpakYuliBank(BaseBankClass):
 class MikroKreditBank(BaseBankClass):
     bank_name = 'Mikrokredit bank'
     bank_slug = 'mikrokreditbank'
+
     @classmethod
     def get_data(self):
         try:
@@ -192,6 +197,7 @@ class MikroKreditBank(BaseBankClass):
 class SQBank(BaseBankClass):
     bank_name = 'Sanoat qurilish bank'
     bank_slug = 'sqbbank'
+
     @staticmethod
     def get_item_by_code(items, code):
         for item in items:
@@ -226,6 +232,7 @@ class SQBank(BaseBankClass):
 class OFBank(BaseBankClass):
     bank_name = 'Orient Finans bank'
     bank_slug = 'ofbbank'
+
     @classmethod
     def get_data(self):
         try:
@@ -251,6 +258,7 @@ class OFBank(BaseBankClass):
 class TrustBank(BaseBankClass):
     bank_name = 'Trastbank'
     bank_slug = 'trastbank'
+
     @classmethod
     def get_data(self):
         try:
@@ -277,6 +285,7 @@ class TrustBank(BaseBankClass):
 class ZiraatBank(BaseBankClass):
     bank_name = 'Ziraat bank'
     bank_slug = 'ziraatbank'
+
     @staticmethod
     def get_item_by_code(items, code):
         for item in items:
@@ -309,6 +318,7 @@ class ZiraatBank(BaseBankClass):
 class KapitalBank(BaseBankClass):
     bank_name = 'Kapitalbank'
     bank_slug = 'kapitalbank'
+
     @classmethod
     def get_data(self):
         try:
@@ -335,6 +345,7 @@ class KapitalBank(BaseBankClass):
 class UniversalBank(BaseBankClass):
     bank_name = 'Universalbank'
     bank_slug = 'universalbank'
+
     @classmethod
     def get_data(self):
         try:
@@ -356,9 +367,115 @@ class UniversalBank(BaseBankClass):
             }
 
 
+class GarantBank(BaseBankClass):
+    bank_name = 'Garantbank'
+    bank_slug = 'garantbank'
+
+    @classmethod
+    def get_data(self):
+        try:
+            response = requests.get('https://garantbank.uz/yz/')
+            content = bs(response.text, 'html.parser')
+            trs = content.find(
+                'table', {'class': "b-rates__table table-rate dtable"}).find_all('tr')
+            olish = trs[2].find_all('td')[1].text
+
+            sotish = trs[3].find_all('td')[1].text
+
+            return {
+                'success': True,
+                'bank_slug': self.bank_slug,
+                'olish': float(olish.replace(',', '.')),
+                'sotish': float(sotish.replace(',', '.'))
+            }
+        except:
+            return {
+                'success': False
+            }
+
+
+class AABBank(BaseBankClass):
+    bank_name = 'Asia allianse bank'
+    bank_slug = 'aabbank'
+
+    @classmethod
+    def get_data(self):
+        try:
+            response = requests.get('https://aab.uz/uz/')
+            content = bs(response.text, 'html.parser')
+            ex_data = content.find('div', {'class': "main-tabs__content active",
+                                   'data-tabs-target': 'exchange-01'}).find_all('tr')[1].find_all('td')
+            olish = ex_data[1].text
+            sotish = ex_data[2].text
+
+            return {
+                'success': True,
+                'bank_slug': self.bank_slug,
+                'olish': olish,
+                'sotish': sotish
+            }
+        except:
+            return {
+                'success': False
+            }
+
+class MadadInvestBank(BaseBankClass):
+    bank_name = 'Madad invest bank'
+    bank_slug = 'madadinvestbank'
+
+    @classmethod
+    def get_data(self):
+        try:
+            response = requests.get('https://madadinvestbank.uz/currency')
+            content = bs(response.text, 'html.parser')
+            ex_data = content.find_all('tbody')[0].find_all('tr')[0].find_all('td')
+            olish = float(ex_data[2].text.replace(' ',''))
+            sotish = float(ex_data[3].text.replace(' ',''))
+
+            return {
+                'success': True,
+                'bank_slug': self.bank_slug,
+                'olish': olish,
+                'sotish': sotish
+            }
+        except:
+            return {
+                'success': False
+            }
+
+
+class AloqaBank(BaseBankClass):
+    bank_name = 'Aloqabank'
+    bank_slug = 'aloqbank'
+
+    @classmethod
+    def get_data(self):
+        try:
+            response = requests.get('https://aloqabank.uz/uz/index.php')
+            content = bs(response.text, 'html.parser')
+            ex_data = content.find('div', {'class': "exchange__group active",
+                                   'data-tabs-target': 'tab1'}).find_all('tr')[1].find_all('span')
+            olish = ex_data[0].text
+            sotish = ex_data[1].text
+
+            return {
+                'success': True,
+                'bank_slug': self.bank_slug,
+                'olish': olish,
+                'sotish': sotish
+            }
+        except:
+            return {
+                'success': False
+            }
+# #########################################################################################
+# jsonli data
+
+
 class AsakaBank(BaseBankClass):
     bank_name = 'Asaka bank'
     bank_slug = 'asakabank'
+
     @classmethod
     def get_data(self):
         try:
@@ -390,6 +507,7 @@ class AsakaBank(BaseBankClass):
 class IpotekaBank(BaseBankClass):
     bank_name = 'Ipoteka bank'
     bank_slug = 'ipotekabank'
+
     @classmethod
     def get_data(self):
         try:
@@ -418,44 +536,31 @@ class IpotekaBank(BaseBankClass):
             }
 
 
-class GarantBank(BaseBankClass):
-    bank_name = 'Garantbank'
-    bank_slug = 'garantbank'
+class XalqBank(BaseBankClass):
+    bank_name = 'Xalq banki'
+    bank_slug = 'xalqbank'
+
+    @staticmethod
+    def get_item_by_code(items, code):
+        for item in items:
+            if item['title'] == code:
+                return item
+        return None
+    
     @classmethod
     def get_data(self):
         try:
-            response = requests.get('https://garantbank.uz/yz/')
-            content = bs(response.text, 'html.parser')
-            trs = content.find(
-                'table', {'class': "b-rates__table table-rate dtable"}).find_all('tr')
-            olish = trs[2].find_all('td')[1].text
-
-            sotish = trs[3].find_all('td')[1].text
-
-            return {
-                'success': True,
-                'bank_slug': self.bank_slug,
-                'olish': float(olish.replace(',', '.')),
-                'sotish': float(sotish.replace(',', '.'))
+            params = {
+                '_f': 'json',
             }
-        except:
-            return {
-                'success': False
-            }
+            requests.packages.urllib3.disable_warnings()
+            response = requests.get(
+                'https://xb.uz/api/v1/external/client/default', params=params,verify=False)
+            data = response.json()
+            ex_data = self.get_item_by_code(data,'USD')
 
-
-class AABBank(BaseBankClass):
-    bank_name = 'Asia allianse bank'
-    bank_slug = 'aabbank'
-    @classmethod
-    def get_data(self):
-        try:
-            response = requests.get('https://aab.uz/uz/')
-            content = bs(response.text, 'html.parser')
-            ex_data = content.find('div', {'class': "main-tabs__content active",
-                                   'data-tabs-target': 'exchange-01'}).find_all('tr')[1].find_all('td')
-            olish = ex_data[1].text
-            sotish = ex_data[2].text
+            olish = float(ex_data.get('BUYING_RATE').replace(' ',''))
+            sotish = float(ex_data.get('SELLING_RATE').replace(' ',''))
 
             return {
                 'success': True,
@@ -468,19 +573,27 @@ class AABBank(BaseBankClass):
                 'success': False
             }
 
+class QQBank(BaseBankClass):
+    bank_name = 'Qishloq qurilish banki'
+    bank_slug = 'qishloqqbbank'
 
-class AloqaBank(BaseBankClass):
-    bank_name = 'Aloqabank'
-    bank_slug = 'aloqbank'
+    @staticmethod
+    def get_item_by_code(items, code):
+        for item in items:
+            if item['slug'] == code:
+                return item
+        return None
+    
     @classmethod
     def get_data(self):
         try:
-            response = requests.get('https://aloqabank.uz/uz/index.php')
-            content = bs(response.text, 'html.parser')
-            ex_data = content.find('div', {'class': "exchange__group active",
-                                   'data-tabs-target': 'tab1'}).find_all('tr')[1].find_all('span')
-            olish = ex_data[0].text
-            sotish = ex_data[1].text
+            requests.packages.urllib3.disable_warnings()
+            response = requests.get('https://manage.qishloqqurilishbank.uz/api/currency-rates/last',verify=False)
+            data = response.json()['data']['currency_rate']['currencies']
+            ex_data = self.get_item_by_code(data,'USD')
+
+            olish = ex_data.get('buy_rate')
+            sotish = ex_data.get('sell_rate')
 
             return {
                 'success': True,
