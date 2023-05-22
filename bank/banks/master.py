@@ -1,6 +1,6 @@
 import threading
 from bank.models import Bank,Daily
-
+from django.core.cache import cache
 
 from .infinbank import (AABBank, AgroBank, AloqaBank, AsakaBank, GarantBank,
                         HamkorBank, InfinBank, IpakYuliBank, IpotekaBank,
@@ -74,5 +74,6 @@ def get_all_data():
 
     for thread in threads:
         thread.join()
-
+        
+    cache.delete('currency_data')
     return True

@@ -30,5 +30,5 @@ class ExchangeListAPIView(APIView):
             'last_date': obj.date,
             'data': old_data
         }
-        cache.set('currency_data', data, 60 * 3)
+        cache.set('currency_data', data, 60 * 5)
         return Response(data)
