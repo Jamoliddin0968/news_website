@@ -1,45 +1,34 @@
 from django.shortcuts import render
-from rest_framework.generics import ListAPIView
+from bank.banks.master import get_all_data
+from rest_framework.generics import GenericAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Exchange,Daily
+from .models import Exchange, Daily
 from .serializers import ExchangeSerializer
 from django.utils import timezone
 from django.core.cache import cache
 
 
 class Test(APIView):
-    def get(self,request):
+    def get(self, request):
         data = get_all_data()
-        return Response(data)
-    
+        return Response({"ok":True})
 
-class ExchangeListAPIView(ListAPIView):
-    def get_queryset(self):
-        obj = Daily.objects.last()        
-        return Exchange.objects.filter(daily_id=obj.id).select_related('bank').order_by('bank__name')
 
-    def get(self,request,*args, **kwargs):
+class ExchangeListAPIView(APIView):
+
+    def get(self, request):
         data = cache.get('currency_data')
         if data:
             return Response(data)
-            
-        queryset = self.filter_queryset(self.get_queryset())
 
-        page = self.paginate_queryset(queryset)
-        if page is not None:
-            serializer = self.get_serializer(page, many=True)
-            return self.get_paginated_response(serializer.data)
-        
         obj = Daily.objects.last()
-        old_data = self.get_serializer(queryset, many=True).data
-        date = queryset.first().daily.date
+        queryset = Exchange.objects.filter(
+            daily_id=obj.id).select_related('bank').order_by('bank__name')
+        old_data = ExchangeSerializer(queryset, many=True).data
         data = {
-            'last_date':obj.date,
-            'data':old_data
+            'last_date': obj.date,
+            'data': old_data
         }
         cache.set('currency_data', data, 60 * 3)
-        
         return Response(data)
-    serializer_class = ExchangeSerializer
-    

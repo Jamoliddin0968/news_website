@@ -75,4 +75,4 @@ def get_all_data():
     for thread in threads:
         thread.join()
 
-    return results
+    return True
