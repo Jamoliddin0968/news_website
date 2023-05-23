@@ -62,7 +62,7 @@ def get_data_and_save(bank, daily):
 
 
 def get_all_data():
-
+    cache.delete('currency_data')
     threads = []
     results = []
     daily = Daily.objects.create()
@@ -75,5 +75,4 @@ def get_all_data():
     for thread in threads:
         thread.join()
         
-    cache.delete('currency_data')
     return True

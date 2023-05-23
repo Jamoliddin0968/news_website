@@ -6,6 +6,7 @@ class BankSerializer(ModelSerializer):
     class Meta:
         model = Bank
         exclude = ('id',)
+        
 class ExchangeSerializer(ModelSerializer):
     bank = BankSerializer()
     class Meta:

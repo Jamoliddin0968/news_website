@@ -211,11 +211,11 @@ class SQBank(BaseBankClass):
             response = requests.get('https://sqb.uz/api/site-kurs-api/')
             data = response.json()
 
-            data = data.get('data').get('offline')
+            data = data['data']['offline']
             ex_data = self.get_item_by_code(data, 'USD')
 
-            olish = ex_data.get('buy')//100
-            sotish = ex_data.get('sell')//100
+            olish = ex_data['buy']//100
+            sotish = ex_data['buy']//100
 
             return {
                 'success': True,
