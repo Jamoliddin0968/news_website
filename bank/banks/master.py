@@ -6,12 +6,12 @@ from .infinbank import (AABBank, AgroBank, AloqaBank, AsakaBank, GarantBank,
                         HamkorBank, InfinBank, IpakYuliBank, IpotekaBank,
                         KapitalBank, MikroKreditBank, OFBank, SQBank,
                         TrustBank, TuronBank, UniversalBank,
-                        ZiraatBank,XalqBank,QQBank,MadadInvestBank)
+                        ZiraatBank,XalqBank,QQBank,MadadInvestBank,NationalBank)
 
 bank_list = (
     TuronBank, InfinBank, AgroBank, HamkorBank, IpakYuliBank, MikroKreditBank, SQBank,
     OFBank, TrustBank, ZiraatBank, KapitalBank, UniversalBank, AsakaBank, IpotekaBank,
-    GarantBank, AABBank, AloqaBank,XalqBank,QQBank,MadadInvestBank
+    GarantBank, AABBank, AloqaBank,XalqBank,QQBank,MadadInvestBank,NationalBank
 )
 
 

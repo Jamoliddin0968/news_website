@@ -444,6 +444,7 @@ class MadadInvestBank(BaseBankClass):
             }
 
 
+
 class AloqaBank(BaseBankClass):
     bank_name = 'Aloqabank'
     bank_slug = 'aloqbank'
@@ -594,6 +595,37 @@ class QQBank(BaseBankClass):
 
             olish = ex_data.get('buy_rate')
             sotish = ex_data.get('sell_rate')
+
+            return {
+                'success': True,
+                'bank_slug': self.bank_slug,
+                'olish': olish,
+                'sotish': sotish
+            }
+        except:
+            return {
+                'success': False
+            }
+
+class NationalBank(BaseBankClass):
+    bank_name = 'Milliy bank'
+    bank_slug = 'nbubank'
+
+    @staticmethod
+    def get_item_by_code(items, code):
+        for item in items:
+            if item['code'] == code:
+                return item
+        return None
+    
+    @classmethod
+    def get_data(self):
+        try:
+            response = requests.get('https://nbu.uz/uz/exchange-rates/json/')
+            data = response.json()
+            ex_data = self.get_item_by_code(data,'USD')
+            olish = float(ex_data['nbu_buy_price'])
+            sotish = float(ex_data['nbu_cell_price'])
 
             return {
                 'success': True,
