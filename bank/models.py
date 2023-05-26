@@ -21,8 +21,3 @@ class Exchange(models.Model):
     bank = models.ForeignKey(Bank, on_delete=models.CASCADE)
     buy=models.IntegerField()
     sell=models.IntegerField()
-    
-
-    
-    
-    
