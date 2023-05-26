@@ -6,7 +6,6 @@ from bank.banks.master import get_all_data
 
 @shared_task
 def update_bank_data(*args, **kwargs):
-    print("wertyu")
     get_all_data()
     return True
 
