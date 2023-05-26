@@ -1,6 +1,8 @@
 """
 settings
 """
+from celery.schedules import crontab
+from datetime import time
 import os
 from pathlib import Path
 
@@ -31,8 +33,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bank.apps.BankConfig',
     'rest_framework',
+    'celery',
     'django_celery_beat',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -144,4 +147,16 @@ CACHES = {
 }
 CELERY_BROKER_URL = 'redis://localhost:6379/0'
 CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
-CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+# CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+CELERY_BEAT_SCHEDULE = {
+    'scheduled_task': {
+        'task': 'bank.tasks.update_bank_data',
+        "schedule": crontab(hour=4, minute=15),
+    },
+    'scheduled_task_9_30': {
+        'task': 'bank.tasks.update_bank_data',
+        "schedule": crontab(hour=9, minute=15),
+    },
+}

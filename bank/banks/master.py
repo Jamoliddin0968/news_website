@@ -58,6 +58,8 @@ def get_data_and_save(bank, daily):
             sell=sotish
         )
         return temp_data
+    else:
+        print(temp_bank.bank_name)
     return None
 
 
