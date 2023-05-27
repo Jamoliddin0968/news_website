@@ -19,8 +19,6 @@ services:
     image: mysql:latest
     container_name: currency_mysql
     environment:
-      - MYSQL_DATABASE=currency
-      - MYSQL_PASSWORD=11111111
       - MYSQL_ROOT_PASSWORD=11111111
     ports:
       - '3306:3306'
