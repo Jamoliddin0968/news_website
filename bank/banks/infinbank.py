@@ -1,3 +1,4 @@
+import json
 import requests
 from bs4 import BeautifulSoup as bs
 from .base import BaseBankClass
@@ -149,9 +150,8 @@ class IpakYuliBank(BaseBankClass):
 
             response = requests.post(
                 'https://ipakyulibank.uz:8888/webapi/default/get-other-contents', headers=headers)
-            data = response.json()
-
-            ex_data = data.get('data').get('exchange_rates_list').get('USD')
+            data = response.json()          
+            ex_data = data['data']['exchange_rates_list']["USD"]
 
             olish = int(ex_data.get('buy'))//100
             sotish = int(ex_data.get('sale'))//100
@@ -162,7 +162,7 @@ class IpakYuliBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
             return {
                 'success': False
             }
@@ -367,33 +367,6 @@ class UniversalBank(BaseBankClass):
             }
 
 
-class GarantBank(BaseBankClass):
-    bank_name = 'Garantbank'
-    bank_slug = 'garantbank'
-
-    @classmethod
-    def get_data(self):
-        try:
-            response = requests.get('https://garantbank.uz/yz/')
-            content = bs(response.text, 'html.parser')
-            trs = content.find(
-                'table', {'class': "b-rates__table table-rate dtable"}).find_all('tr')
-            olish = trs[2].find_all('td')[1].text
-
-            sotish = trs[3].find_all('td')[1].text
-
-            return {
-                'success': True,
-                'bank_slug': self.bank_slug,
-                'olish': float(olish.replace(',', '.')),
-                'sotish': float(sotish.replace(',', '.'))
-            }
-        except:
-            return {
-                'success': False
-            }
-
-
 class AABBank(BaseBankClass):
     bank_name = 'Asia allianse bank'
     bank_slug = 'aabbank'
@@ -443,6 +416,39 @@ class MadadInvestBank(BaseBankClass):
                 'success': False
             }
 
+class GarantBank(BaseBankClass):
+    bank_name = 'Garantbank'
+    bank_slug = 'garantbank'
+
+    @staticmethod
+    def _get_item_by_code(items, code):
+        for item in items:
+            if item['Ccy'] == code:
+                return item
+        return None
+    
+    @classmethod
+    def get_data(self):
+        try:
+            requests.packages.urllib3.disable_warnings()
+            response = requests.get('https://garantbank.uz/ru/exchange-rates/',verify=False)
+            content = bs(response.text, 'html.parser')
+            spans = content.find_all('tr')[2].find_all('span')[2:4]
+            olish = spans[0].text
+
+            sotish = spans[1].text
+            return {
+                'success': True,
+                'bank_slug': self.bank_slug,
+                'olish': float(olish.replace(',', '.')),
+                'sotish': float(sotish.replace(',', '.'))
+            }
+        except Exception as e:
+            print(e.args)
+            return {
+                'success': False,
+                'm':e.args
+            }
 
 
 class AloqaBank(BaseBankClass):
@@ -637,3 +643,6 @@ class NationalBank(BaseBankClass):
             return {
                 'success': False
             }
+
+
+# deyarli jsonli data

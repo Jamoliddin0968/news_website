@@ -1,7 +1,7 @@
 import threading
 from bank.models import Bank,Daily
 from django.core.cache import cache
-
+from  datetime import datetime
 from .infinbank import (AABBank, AgroBank, AloqaBank, AsakaBank, GarantBank,
                         HamkorBank, InfinBank, IpakYuliBank, IpotekaBank,
                         KapitalBank, MikroKreditBank, OFBank, SQBank,
@@ -40,7 +40,9 @@ bank_list = (
 def get_data_and_save(bank, daily):
     from bank.models import Exchange as ex
     temp_bank = bank()
+    t1 = datetime.now()
     temp_data = temp_bank.get_data()
+    # print(temp_bank.bank_name,datetime.now()-t1)
     if temp_data["success"]:
         bank_slug = temp_data['bank_slug']
         current_bank=Bank.objects.filter(slug=bank_slug).first()
@@ -64,7 +66,7 @@ def get_data_and_save(bank, daily):
 
 
 def get_all_data():
-    cache.delete('currency_data')
+    # cache.delete('currency_data')
     threads = []
     results = []
     daily = Daily.objects.create()
