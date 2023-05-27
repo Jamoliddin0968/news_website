@@ -154,14 +154,18 @@ CELERY_RESULT_BACKEND = 'redis://redis:6379'
 CELERY_BEAT_SCHEDULE = {
     'scheduled_task': {
         'task': 'bank.tasks.update_bank_data',
+        "schedule": crontab(hour=4, minute=00),
+    },
+    'scheduled_task': {
+        'task': 'bank.tasks.update_bank_data',
         "schedule": crontab(hour=4, minute=15),
     },
      'scheduled_task_9_37': {
         'task': 'bank.tasks.update_bank_data',
-        "schedule": crontab(hour=12, minute=45),
+        "schedule": crontab(hour=19, minute=35),
     },
     'scheduled_task_9_30': {
         'task': 'bank.tasks.update_bank_data',
-        "schedule": crontab(hour=12, minute=47),
+        "schedule": crontab(hour=14, minute=31),
     },
 }

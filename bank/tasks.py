@@ -6,7 +6,8 @@ from bank.banks.master import get_all_data
 
 @shared_task
 def update_bank_data(*args, **kwargs):
-    get_all_data()
+    # get_all_data()
+    print("dgfhjnkm,l")
     return True
 
 

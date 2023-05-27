@@ -18,14 +18,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -A config worker --loglevel=info
+    command: celery -A config worker -l info
     depends_on:
       - redis
   celery-beat:
     build:
       context: .
       dockerfile: Dockerfile
-    command: celery -A config beat --loglevel=info
+    command: celery -A config beat -l info
     depends_on:
       - redis
   nginx:
