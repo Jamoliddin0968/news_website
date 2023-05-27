@@ -25,6 +25,7 @@ services:
     restart: always
     volumes:
       - ./mysql-data:/var/lib/mysql
+      - /mysql_init:/docker-entrypoint-initdb.d
   redis:
     container_name: currency_redis
     image: redis:latest
