@@ -12,20 +12,19 @@ services:
       - celery-worker
       - celery-beat
       - db
-    command: >
-      sh -c "python manage.py makemigrations &&
-             python manage.py migrate"
+    # command: >
+    #   sh -c "python manage.py makemigrations &&
+    #          python manage.py migrate"
   db:
     image: mysql:latest
-    container_name: currency_mysql
     environment:
       - MYSQL_ROOT_PASSWORD=11111111
-    ports:
-      - '3306:3306'
-    restart: always
+      - MYSQL_DATABASE=currency
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=11111111
+      - MYSQL_HOST=db
     volumes:
-      - ./mysql-data:/var/lib/mysql
-      - /mysql_init:/docker-entrypoint-initdb.d
+      - ./mysql_data:/var/lib/mysql
   redis:
     container_name: currency_redis
     image: redis:latest
