@@ -12,9 +12,6 @@ services:
       - celery-worker
       - celery-beat
       - db
-    # command: >
-    #   sh -c "python manage.py makemigrations &&
-    #          python manage.py migrate"
   db:
     image: mysql:latest
     environment:
