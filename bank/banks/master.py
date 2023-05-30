@@ -61,7 +61,7 @@ def get_data_and_save(bank, daily):
             buy=olish,
             sell=sotish
         )
-        return temp_data
+        return True
     else:
         print(temp_bank.bank_name)
     return None
@@ -69,16 +69,8 @@ def get_data_and_save(bank, daily):
 
 def get_all_data():
     cache.delete('currency_data')
-    threads = []
-    results = []
     daily = Daily.objects.create()
     for bank in bank_list:
-        thread = threading.Thread(
-            target=lambda: results.append(get_data_and_save(bank, daily)))
-        thread.start()
-        threads.append(thread)
-
-    for thread in threads:
-        thread.join()
+        get_data_and_save(bank, daily)
 
     return True
