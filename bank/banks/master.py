@@ -19,24 +19,32 @@ bank_list = (
 )
 
 
-def get_data(bank, daily):
+def bank_dict() -> dict:
+    bank_dict_list = {}
+    banks = Bank.objects.all()
+    for bank in banks:
+        bank_dict_list[bank.slug] = bank.id
+    return bank_dict_list
+
+
+def get_data(bank, daily_id, bank_id):
     from bank.models import Exchange as ex
     temp_bank = bank()
     t1 = datetime.now()
     temp_data = temp_bank.get_data()
     if temp_data["success"]:
         bank_slug = temp_data['bank_slug']
-        current_bank = Bank.objects.filter(slug=bank_slug).first()
-        if not current_bank:
+        if not bank_id:
             current_bank = Bank.objects.create(
                 slug=bank_slug,
                 name=temp_bank.bank_name
             )
+            bank_id = current_bank.id
         olish = int(temp_data['olish'])
         sotish = int(temp_data['sotish'])
         new_obj = ex(
-            daily=daily,
-            bank=current_bank,
+            daily_id=daily_id,
+            bank_id=bank_id,
             buy=olish,
             sell=sotish
         )
@@ -50,9 +58,10 @@ def get_all_data():
     from bank.models import Exchange as ex
     t1 = datetime.now()
     daily = Daily.objects.create()
+    bank_id_list = bank_dict()
     data = []
     with ThreadPoolExecutor() as executor:
-        futures = [executor.submit(get_data, bank, daily)
+        futures = [executor.submit(get_data, bank, daily.id, bank_id_list.get(bank().bank_slug))
                    for bank in bank_list]
 
         for future in as_completed(futures):
