@@ -27,7 +27,7 @@ class ExchangeListAPIView(APIView):
         if data:
             return Response(data)
 
-        obj = Daily.objects.last()
+        obj = Daily.objects.filter(completed=True).last()
         queryset = Exchange.objects.filter(
             daily_id=obj.id).select_related('bank').order_by('bank__name')
         old_data = ExchangeSerializer(queryset, many=True).data

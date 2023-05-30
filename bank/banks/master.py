@@ -70,5 +70,7 @@ def get_all_data():
                 data.append(temp_data)
 
     ex.objects.bulk_create(data)
+    daily.completed = True
+    daily.save()
     cache.delete('currency_data')
     return True
