@@ -201,42 +201,6 @@ class MikroKreditBank(BaseBankClass):
             }
 
 
-class SQBank(BaseBankClass):
-    bank_name = 'Sanoat qurilish bank'
-    bank_slug = 'sqbbank'
-
-    @staticmethod
-    def get_item_by_code(items, code):
-        for item in items:
-            if item['code'] == code:
-                return item
-        return None
-
-    @classmethod
-    def get_data(self):
-        try:
-            response = requests.get('https://sqb.uz/api/site-kurs-api/')
-            data = response.json()
-
-            data = data['data']['offline']
-            ex_data = self.get_item_by_code(data, 'USD')
-
-            olish = ex_data['buy']//100
-            sotish = ex_data['buy']//100
-
-            return {
-                'success': True,
-                'bank_slug': self.bank_slug,
-                'olish': olish,
-                'sotish': sotish
-            }
-        except Exception as e:
-            print(e.args)
-            return {
-                'success': False
-            }
-
-
 class OFBank(BaseBankClass):
     bank_name = 'Orient Finans bank'
     bank_slug = 'ofbbank'
@@ -672,5 +636,40 @@ class NationalBank(BaseBankClass):
                 'success': False
             }
 
+
+class SQBank(BaseBankClass):
+    bank_name = 'Sanoat qurilish bank'
+    bank_slug = 'sqbbank'
+
+    @staticmethod
+    def get_item_by_code(items, code):
+        for item in items:
+            if item['code'] == code:
+                return item
+        return None
+
+    @classmethod
+    def get_data(self):
+        try:
+            response = requests.get('https://sqb.uz/api/site-kurs-api/')
+            data = response.json()
+
+            data = data['data']['offline']
+            ex_data = self.get_item_by_code(data, 'USD')
+
+            olish = ex_data['buy']//100
+            sotish = ex_data['sell']//100
+
+            return {
+                'success': True,
+                'bank_slug': self.bank_slug,
+                'olish': olish,
+                'sotish': sotish
+            }
+        except Exception as e:
+            print(e.args)
+            return {
+                'success': False
+            }
 
 # deyarli jsonli data

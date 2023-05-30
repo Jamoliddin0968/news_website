@@ -56,7 +56,6 @@ def get_data(bank, daily_id, bank_id):
 
 def get_all_data():
     from bank.models import Exchange as ex
-    t1 = datetime.now()
     daily = Daily.objects.create()
     bank_id_list = bank_dict()
     data = []
@@ -70,6 +69,5 @@ def get_all_data():
                 data.append(temp_data)
 
     ex.objects.bulk_create(data)
-    print(datetime.now()-t1)
     cache.delete('currency_data')
     return True
