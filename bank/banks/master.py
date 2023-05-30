@@ -68,7 +68,9 @@ def get_data_and_save(bank, daily):
 
 def get_all_data():
     cache.delete('currency_data')
+    t1 = datetime.now()
     daily = Daily.objects.create()
     for bank in bank_list:
+        print(bank.bank_name)
         get_data_and_save(bank, daily)
     return True

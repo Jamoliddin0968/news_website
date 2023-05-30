@@ -56,7 +56,8 @@ class TuronBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -83,7 +84,8 @@ class HamkorBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -117,7 +119,8 @@ class AgroBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -165,6 +168,7 @@ class IpakYuliBank(BaseBankClass):
                 'sotish': sotish
             }
         except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -190,7 +194,8 @@ class MikroKreditBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -225,7 +230,8 @@ class SQBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -251,7 +257,8 @@ class OFBank(BaseBankClass):
                 'olish': float(olish),
                 'sotish': float(sotish)
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -278,7 +285,8 @@ class TrustBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -311,7 +319,8 @@ class ZiraatBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -338,7 +347,8 @@ class KapitalBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -363,7 +373,8 @@ class UniversalBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -389,7 +400,8 @@ class AABBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -415,7 +427,8 @@ class MadadInvestBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -477,7 +490,8 @@ class AloqaBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -511,7 +525,8 @@ class AsakaBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -543,7 +558,8 @@ class IpotekaBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -617,7 +633,8 @@ class QQBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
@@ -649,7 +666,8 @@ class NationalBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
