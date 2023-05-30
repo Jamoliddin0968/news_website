@@ -1,6 +1,7 @@
 """
 settings
 """
+import logging
 import os
 from datetime import time
 from pathlib import Path
@@ -178,5 +179,26 @@ CELERY_BEAT_SCHEDULE = {
     'scheduled_task57': {
         'task': 'bank.tasks.update_bank_data',
         "schedule": crontab(hour=5, minute=39),
+    },
+}
+
+
+# settings.py
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(BASE_DIR, 'error.log'),
+            'level': 'DEBUG',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+        },
     },
 }
