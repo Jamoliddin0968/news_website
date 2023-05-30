@@ -1,18 +1,23 @@
-from django.shortcuts import render
-from bank.banks.master import get_all_data
-from rest_framework.generics import GenericAPIView
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from .models import Exchange, Daily
-from .serializers import ExchangeSerializer
-from django.utils import timezone
+import threading
+
 from django.core.cache import cache
+from django.shortcuts import render
+from django.utils import timezone
+from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from bank.banks.master import get_all_data
+
+from .models import Daily, Exchange
+from .serializers import ExchangeSerializer
 
 
 class Test(APIView):
     def get(self, request):
-        data = get_all_data()
-        return Response({"ok":True})
+        thread = threading.Thread(target=get_all_data)
+        thread.start()
+        return Response({"ok": True})
 
 
 class ExchangeListAPIView(APIView):
