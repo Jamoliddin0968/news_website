@@ -1,10 +1,11 @@
 """
 settings
 """
-from celery.schedules import crontab
-from datetime import time
 import os
+from datetime import time
 from pathlib import Path
+
+from celery.schedules import crontab
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -87,7 +88,7 @@ DATABASES = {
         'NAME': 'currency',
         'USER': 'user',
         'PASSWORD': '11111111',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': 3306,
     }
 }
@@ -152,11 +153,11 @@ SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': 'redis://redis:6379',
+        'LOCATION': 'redis://127.0.0.1:6379',
     }
 }
-CELERY_BROKER_URL = 'redis://redis:6379'
-CELERY_RESULT_BACKEND = 'redis://redis:6379'
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
 
 # CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
