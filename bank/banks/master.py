@@ -18,28 +18,7 @@ bank_list = (
 )
 
 
-# def get_all_data(daily):
-#     from bank.models import Exchange as ex
-
-#     data = []
-
-#     for i in bank_list:
-#         temp_data = i().get_data()
-#         if temp_data["success"]:
-#             bank_name = temp_data['bank_name']
-#             olish = int(temp_data['olish'])
-
-#             sotish = int(temp_data['sotish'])
-#             ex.objects.create(
-#                 daily=daily,
-#                 bank_name=bank_name,
-#                 buy=olish, sell=sotish
-#             )
-#             data.append(temp_data)
-#     return data
-
-
-def get_data_and_save(bank, daily):
+def get_data(bank, daily):
     from bank.models import Exchange as ex
     temp_bank = bank()
     t1 = datetime.now()
@@ -54,23 +33,27 @@ def get_data_and_save(bank, daily):
             )
         olish = int(temp_data['olish'])
         sotish = int(temp_data['sotish'])
-        ex.objects.create(
+        new_obj = ex(
             daily=daily,
             bank=current_bank,
             buy=olish,
             sell=sotish
         )
-        return True
+        return new_obj
     else:
         print(temp_bank.bank_name)
     return None
 
 
 def get_all_data():
-    cache.delete('currency_data')
-    t1 = datetime.now()
+    from bank.models import Exchange as ex
     daily = Daily.objects.create()
+    data = []
     for bank in bank_list:
         print(bank.bank_name)
-        get_data_and_save(bank, daily)
+        temp_data = get_data(bank, daily)
+        if temp_data:
+            data.append(temp_data)
+    ex.objects.bulk_create(data)
+    cache.delete('currency_data')
     return True
