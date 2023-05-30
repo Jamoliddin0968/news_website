@@ -6,6 +6,9 @@ from django.db import models
 class Daily(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     completed = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return str(self.date)
     # def generate_daily_data(self):
     #     self.exchange_set.all().delete()
     #     generate_data(self)

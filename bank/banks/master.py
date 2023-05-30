@@ -31,7 +31,6 @@ def bank_dict() -> dict:
 def get_data(bank, daily_id, bank_id):
     from bank.models import Exchange as ex
     temp_bank = bank()
-    t1 = datetime.now()
     temp_data = temp_bank.get_data()
     if temp_data["success"]:
         bank_slug = temp_data['bank_slug']
