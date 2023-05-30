@@ -1,6 +1,8 @@
 import json
+
 import requests
 from bs4 import BeautifulSoup as bs
+
 from .base import BaseBankClass
 
 
@@ -150,7 +152,7 @@ class IpakYuliBank(BaseBankClass):
 
             response = requests.post(
                 'https://ipakyulibank.uz:8888/webapi/default/get-other-contents', headers=headers)
-            data = response.json()          
+            data = response.json()
             ex_data = data['data']['exchange_rates_list']["USD"]
 
             olish = int(ex_data.get('buy'))//100
@@ -392,6 +394,7 @@ class AABBank(BaseBankClass):
                 'success': False
             }
 
+
 class MadadInvestBank(BaseBankClass):
     bank_name = 'Madad invest bank'
     bank_slug = 'madadinvestbank'
@@ -401,9 +404,10 @@ class MadadInvestBank(BaseBankClass):
         try:
             response = requests.get('https://madadinvestbank.uz/currency')
             content = bs(response.text, 'html.parser')
-            ex_data = content.find_all('tbody')[0].find_all('tr')[0].find_all('td')
-            olish = float(ex_data[2].text.replace(' ',''))
-            sotish = float(ex_data[3].text.replace(' ',''))
+            ex_data = content.find_all('tbody')[0].find_all('tr')[
+                0].find_all('td')
+            olish = float(ex_data[2].text.replace(' ', ''))
+            sotish = float(ex_data[3].text.replace(' ', ''))
 
             return {
                 'success': True,
@@ -416,6 +420,7 @@ class MadadInvestBank(BaseBankClass):
                 'success': False
             }
 
+
 class GarantBank(BaseBankClass):
     bank_name = 'Garantbank'
     bank_slug = 'garantbank'
@@ -426,12 +431,13 @@ class GarantBank(BaseBankClass):
             if item['Ccy'] == code:
                 return item
         return None
-    
+
     @classmethod
     def get_data(self):
         try:
             requests.packages.urllib3.disable_warnings()
-            response = requests.get('https://garantbank.uz/ru/exchange-rates/',verify=False)
+            response = requests.get(
+                'https://garantbank.uz/ru/exchange-rates/', verify=False)
             content = bs(response.text, 'html.parser')
             spans = content.find_all('tr')[2].find_all('span')[2:4]
             olish = spans[0].text
@@ -447,7 +453,7 @@ class GarantBank(BaseBankClass):
             print(e.args)
             return {
                 'success': False,
-                'm':e.args
+                'm': e.args
             }
 
 
@@ -553,7 +559,7 @@ class XalqBank(BaseBankClass):
             if item['title'] == code:
                 return item
         return None
-    
+
     @classmethod
     def get_data(self):
         try:
@@ -562,12 +568,12 @@ class XalqBank(BaseBankClass):
             }
             requests.packages.urllib3.disable_warnings()
             response = requests.get(
-                'https://xb.uz/api/v1/external/client/default', params=params,verify=False)
+                'https://xb.uz/api/v1/external/client/default', params=params, verify=False)
             data = response.json()
-            ex_data = self.get_item_by_code(data,'USD')
+            ex_data = self.get_item_by_code(data, 'USD')
 
-            olish = float(ex_data.get('BUYING_RATE').replace(' ',''))
-            sotish = float(ex_data.get('SELLING_RATE').replace(' ',''))
+            olish = float(ex_data.get('BUYING_RATE').replace(' ', ''))
+            sotish = float(ex_data.get('SELLING_RATE').replace(' ', ''))
 
             return {
                 'success': True,
@@ -575,10 +581,12 @@ class XalqBank(BaseBankClass):
                 'olish': olish,
                 'sotish': sotish
             }
-        except:
+        except Exception as e:
+            print(e.args)
             return {
                 'success': False
             }
+
 
 class QQBank(BaseBankClass):
     bank_name = 'Qishloq qurilish banki'
@@ -590,14 +598,15 @@ class QQBank(BaseBankClass):
             if item['slug'] == code:
                 return item
         return None
-    
+
     @classmethod
     def get_data(self):
         try:
             requests.packages.urllib3.disable_warnings()
-            response = requests.get('https://manage.qishloqqurilishbank.uz/api/currency-rates/last',verify=False)
+            response = requests.get(
+                'https://manage.qishloqqurilishbank.uz/api/currency-rates/last', verify=False)
             data = response.json()['data']['currency_rate']['currencies']
-            ex_data = self.get_item_by_code(data,'USD')
+            ex_data = self.get_item_by_code(data, 'USD')
 
             olish = ex_data.get('buy_rate')
             sotish = ex_data.get('sell_rate')
@@ -613,6 +622,7 @@ class QQBank(BaseBankClass):
                 'success': False
             }
 
+
 class NationalBank(BaseBankClass):
     bank_name = 'Milliy bank'
     bank_slug = 'nbubank'
@@ -623,13 +633,13 @@ class NationalBank(BaseBankClass):
             if item['code'] == code:
                 return item
         return None
-    
+
     @classmethod
     def get_data(self):
         try:
             response = requests.get('https://nbu.uz/uz/exchange-rates/json/')
             data = response.json()
-            ex_data = self.get_item_by_code(data,'USD')
+            ex_data = self.get_item_by_code(data, 'USD')
             olish = float(ex_data['nbu_buy_price'])
             sotish = float(ex_data['nbu_cell_price'])
 
