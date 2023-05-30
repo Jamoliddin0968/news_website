@@ -1,4 +1,5 @@
 import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
 
 from django.core.cache import cache
@@ -47,13 +48,19 @@ def get_data(bank, daily):
 
 def get_all_data():
     from bank.models import Exchange as ex
+    t1 = datetime.now()
     daily = Daily.objects.create()
     data = []
-    for bank in bank_list:
-        print(bank.bank_name)
-        temp_data = get_data(bank, daily)
-        if temp_data:
-            data.append(temp_data)
+    with ThreadPoolExecutor() as executor:
+        futures = [executor.submit(get_data, bank, daily)
+                   for bank in bank_list]
+
+        for future in as_completed(futures):
+            temp_data = future.result()
+            if temp_data:
+                data.append(temp_data)
+
     ex.objects.bulk_create(data)
+    print(datetime.now()-t1)
     cache.delete('currency_data')
     return True
