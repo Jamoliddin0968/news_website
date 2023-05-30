@@ -672,4 +672,70 @@ class SQBank(BaseBankClass):
                 'success': False
             }
 
+
+class sdfgfSQBank(BaseBankClass):
+    bank_name = 'Sanoxcxcat qurilish bank'
+    bank_slug = 'sqbbxcank'
+
+    @staticmethod
+    def get_item_by_code(items, code):
+        for item in items:
+            if item['code'] == code:
+                return item
+        return None
+
+    @classmethod
+    def get_data(self):
+        try:
+            cookies = {
+                '_ga': 'GA1.1.523508631.1682585902',
+                'smart_top': '1',
+                'PHPSESSID': 'a59f8ef13bf330882e9e40af73166aa4',
+                '_ga_RQHSFQHPM6': 'GS1.1.1685450316.5.1.1685450354.0.0.0',
+                '__atuvc': '0%7C18%2C0%7C19%2C0%7C20%2C4%7C21%2C2%7C22',
+                '__atuvs': '6475ee4d70da869c001',
+            }
+
+            headers = {
+                'authority': 'xb.uz',
+                'accept': 'application/json',
+                'accept-language': 'en-US,en;q=0.9,ru;q=0.8',
+                # 'cookie': '_ga=GA1.1.523508631.1682585902; smart_top=1; PHPSESSID=a59f8ef13bf330882e9e40af73166aa4; _ga_RQHSFQHPM6=GS1.1.1685450316.5.1.1685450354.0.0.0; __atuvc=0%7C18%2C0%7C19%2C0%7C20%2C4%7C21%2C2%7C22; __atuvs=6475ee4d70da869c001',
+                'referer': 'https://xb.uz/ru/page/physical/',
+                'sec-ch-ua': '"Microsoft Edge";v="113", "Chromium";v="113", "Not-A.Brand";v="24"',
+                'sec-ch-ua-mobile': '?0',
+                'sec-ch-ua-platform': '"Windows"',
+                'sec-fetch-dest': 'empty',
+                'sec-fetch-mode': 'cors',
+                'sec-fetch-site': 'same-origin',
+                'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.57',
+            }
+
+            params = {
+                '_f': 'json',
+            }
+
+            response = requests.get('https://xb.uz/api/v1/external/client/default',
+                                    params=params, cookies=cookies, headers=headers)
+            data = response.json()
+
+            data = data['data']['offline']
+            ex_data = self.get_item_by_code(data, 'USD')
+
+            olish = ex_data['buy']//100
+            sotish = ex_data['sell']//100
+
+            return {
+                'success': True,
+                'bank_slug': self.bank_slug,
+                'olish': olish,
+                'sotish': sotish
+            }
+        except Exception as e:
+            print(e.args)
+            return {
+                'success': False
+            }
+
+
 # deyarli jsonli data
