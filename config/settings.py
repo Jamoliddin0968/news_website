@@ -168,7 +168,7 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'bank.tasks.update_bank_data',
         "schedule": crontab(hour=4, minute=15),
     },
-    'scheduled_task': {
+    'scheduled_task_10_30': {
         'task': 'bank.tasks.update_bank_data',
         "schedule": crontab(hour=5, minute=30),
     },
